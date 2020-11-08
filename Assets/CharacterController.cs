@@ -5,12 +5,14 @@ using UnityEngine;
 public class CharacterController : MonoBehaviour
 {
     [SerializeField]
-    float moveSpeed = 4.0f;
-
+    string horizontalAxis;
+    [SerializeField]
+    string verticalAxis;
+    [SerializeField]
+    float moveSpeed = 10.0f;
     Vector3 forward;
     Vector3 right;
 
-    // Start is called before the first frame update
     void Start()
     {
         // Define "Player" up and right axis
@@ -22,7 +24,6 @@ public class CharacterController : MonoBehaviour
 
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (Input.anyKey) {
@@ -31,12 +32,13 @@ public class CharacterController : MonoBehaviour
     }
 
     void Move() {
-        Vector3 direction = new Vector3(Input.GetAxis("HorizontalKey"), 0, Input.GetAxis("VerticalKey"));
+        Vector3 direction = new Vector3(Input.GetAxis(horizontalAxis), 0, Input.GetAxis(verticalAxis));
         
-        Vector3 rightMovement = right * moveSpeed * Time.deltaTime * Input.GetAxis("HorizontalKey");
-        Vector3 upMovement = forward * moveSpeed * Time.deltaTime * Input.GetAxis("VerticalKey");
+        Vector3 rightMovement = right * moveSpeed * Time.deltaTime * Input.GetAxis(horizontalAxis);
+        Vector3 upMovement = forward * moveSpeed * Time.deltaTime * Input.GetAxis(verticalAxis);
 
         Vector3 heading = Vector3.Normalize(rightMovement + upMovement);
+        var originalTransform = transform.position;
         transform.forward = heading;
         transform.position += rightMovement;
         transform.position += upMovement;
