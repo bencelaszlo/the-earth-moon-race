@@ -16,6 +16,12 @@ public class CarController : MonoBehaviour
     private float rotationVelocity;
     private float groundAngleVelocity;
 
+    [SerializeField]
+    string verticalAxis;
+
+    [SerializeField]
+    string horizontalAxis;
+
     void FixedUpdate() {
         // Check if we are on the ground
         if (Physics.Raycast(transform.position, transform.up * -1, 3f)) {
@@ -23,7 +29,7 @@ public class CarController : MonoBehaviour
             GetComponent<Rigidbody>().drag = 1;
 
             // Calculate forward force
-            Vector3 forwardForce = transform.forward * acceleration * Input.GetAxis("Vertical");
+            Vector3 forwardForce = transform.forward * acceleration * Input.GetAxis(verticalAxis);
             // Correct force deltatime and mass
             forwardForce = forwardForce * Time.deltaTime * GetComponent<Rigidbody>().mass;
 
@@ -35,14 +41,14 @@ public class CarController : MonoBehaviour
         }
 
         // You can turn in air or on the ground
-        Vector3 turnTorque = Vector3.up * rotationRate * Input.GetAxis("Horizontal");
+        Vector3 turnTorque = Vector3.up * rotationRate * Input.GetAxis(horizontalAxis);
         // Correct force deltatime and mass
         turnTorque = turnTorque * Time.deltaTime * GetComponent<Rigidbody>().mass;
         GetComponent<Rigidbody>().AddTorque(turnTorque);
 
         // Fake rotate the car when you are turning
         Vector3 newRotation = transform.eulerAngles;
-        newRotation.z = Mathf.SmoothDampAngle(newRotation.z, Input.GetAxis("Horizontal") * -turnRotationAngle, ref rotationVelocity, turnRotationSeekSpeed);
+        newRotation.z = Mathf.SmoothDampAngle(newRotation.z, Input.GetAxis(horizontalAxis) * -turnRotationAngle, ref rotationVelocity, turnRotationSeekSpeed);
         transform.eulerAngles =     newRotation;
     }
 }
