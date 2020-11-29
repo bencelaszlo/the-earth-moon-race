@@ -37,14 +37,19 @@ public class LevelGenerator : MonoBehaviour
             FRESH_STEADY, // STEADY LESSER THAN 3 TILES AGO
             UPWARD,
             DOWNWARD
+    }
 
+    enum DirectionTrend {
+        STRAIGHT,
+        LEFT,
+        RIGHT
     }
 
     public float[] heightmap;
 
     void Start()
     {
-        // TODO: Add more check
+        // TODO: Add more checks
         if (tilePrefab == null) {
             Debug.Log("tilePrefab is missing from the LevelGenerator script!");
             return;
@@ -57,18 +62,10 @@ public class LevelGenerator : MonoBehaviour
         }
 
         for (int i = 10; i > 0; i--) {
-            Instantiate(wallPrefab, new Vector3(-1, 2, (0 - i) * tileSize), Quaternion.identity);
-            for (int j = 0; j < trackWidth; j++) {
-                Instantiate(tilePrefab, new Vector3(tileSize * -0.5f + j * tileSize, 0, (0 - i) * tileSize), Quaternion.identity);
-            }
-            Instantiate(wallPrefab, new Vector3((trackWidth - 1) * tileSize, 2, (0 - i) * tileSize), Quaternion.identity);
+            GenerateSlice(trackWidth, tileSize, 0, (0 - i), tilePrefab, wallPrefab);
         }
 
-        Instantiate(wallPrefab, new Vector3(-1, 2, 0), Quaternion.identity);
-        for (int j = 0; j < trackWidth; j++) {
-            Instantiate(startFinishTilePrefab, new Vector3(tileSize * -0.5f + j * tileSize, 0, 0), Quaternion.identity);
-        }
-        Instantiate(wallPrefab, new Vector3((trackWidth - 1) * tileSize, 2, 0), Quaternion.identity);
+        GenerateSlice(trackWidth, tileSize, 0, 0, startFinishTilePrefab, wallPrefab);
 
         int MIN_TREND_LENGTH = 10;
 
@@ -167,18 +164,18 @@ public class LevelGenerator : MonoBehaviour
                 }
             }
 
-            Instantiate(wallPrefab, new Vector3(-1, 2 + height, i * tileSize), Quaternion.identity);
-            for (int j = 0; j < trackWidth; j++) {
-                Instantiate(tilePrefab, new Vector3(tileSize * -0.5f + j * tileSize, height, i * tileSize), tilePrefab.rotation);
- 
-            }
-            Instantiate(wallPrefab, new Vector3((trackWidth - 1) * tileSize, 2 + height, i * tileSize), Quaternion.identity);
+            GenerateSlice(trackWidth, tileSize, height, i * tileSize, tilePrefab, wallPrefab);
         }
 
-        Instantiate(wallPrefab, new Vector3(-1, 2 + height, (length -1) * tileSize), Quaternion.identity);
+        GenerateSlice(trackWidth, tileSize, height, (length - 1), startFinishTilePrefab, wallPrefab);
+    }
+
+    private void GenerateSlice(float trackWidth, float tileSize, float y, float x, Transform tilePrefab, Transform wallPrefab) {
+        Instantiate(wallPrefab, new Vector3(-1, 2 + y, x * tileSize), Quaternion.identity);
         for (int j = 0; j < trackWidth; j++) {
-            Instantiate(startFinishTilePrefab, new Vector3(tileSize * -0.5f + j * tileSize, height, (length - 1) * tileSize), Quaternion.identity);
+            Instantiate(tilePrefab, new Vector3(tileSize * -0.5f + j * tileSize, y, x * tileSize), Quaternion.identity);
         }
-        Instantiate(wallPrefab, new Vector3((trackWidth - 1) * tileSize, 2 + height, (length -1) * tileSize), Quaternion.identity);
+        Instantiate(wallPrefab, new Vector3((trackWidth - 1) * tileSize, 2 + y, x * tileSize), Quaternion.identity);
     }
 }
+

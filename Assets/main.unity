@@ -279,7 +279,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 165956054}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 8, y: 3, z: -5}
+  m_LocalPosition: {x: 12, y: 3, z: -4}
   m_LocalScale: {x: 2, y: 0.5, z: 4}
   m_Children:
   - {fileID: 913201692}
@@ -307,6 +307,7 @@ MonoBehaviour:
   opponent: {fileID: 1190258381}
   positionText: {fileID: 1543329275}
   winnerText: {fileID: 472959470}
+  isLoser: 0
   playerName: Player Two
 --- !u!1 &277225197
 GameObject:
@@ -1185,7 +1186,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1190258376}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2, y: 3, z: -4}
+  m_LocalPosition: {x: 5, y: 3, z: -4}
   m_LocalScale: {x: 2, y: 0.5, z: 4}
   m_Children:
   - {fileID: 1992499093}
@@ -1263,6 +1264,7 @@ MonoBehaviour:
   opponent: {fileID: 165956062}
   positionText: {fileID: 1538256184}
   winnerText: {fileID: 472959470}
+  isLoser: 0
   playerName: Player One
 --- !u!1 &1341418492
 GameObject:
