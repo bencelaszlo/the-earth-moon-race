@@ -20,7 +20,7 @@ public class LevelGenerator : MonoBehaviour
     Transform wallPrefab;
 
     [SerializeField]
-    int length = 100;
+    public int length = 100;
     [SerializeField]
     float trackWidth = 3.0f;
     [SerializeField]
