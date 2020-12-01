@@ -100,8 +100,11 @@ public class LevelGenerator : MonoBehaviour
     Transform GenerateTurn(Vector3 position)
     {
         float size = trackWidth * tileSize;
-        position -= new Vector3(size / 2, 0, size / 2);
-        Transform tile = Instantiate(tilePrefab, position, Quaternion.identity, transform);
+        position += new Vector3(size / 2, 0, size / 2);
+        // Debug.Log("before x = " + nextTurnX + " y = " + 0 + " z = " + nextTurnZ);
+        // Debug.Log("before x = " + nextTurnX + " y = " + 0 + " z = " + nextTurnZ);
+        Debug.Log("Positon: " + position);
+        Transform tile = Instantiate(tilePrefab, position, Quaternion.identity);
         tile.transform.localScale = new Vector3(size, 0.1f, size);
         return tile;
     }
@@ -114,8 +117,6 @@ public class LevelGenerator : MonoBehaviour
             return;
         }
 
-        GenerateTurn(new Vector3(-50, 0, -50));
-
         heightmap = new float[length];
 
         Transform wall = Instantiate(wallPrefab, new Vector3(trackWidth * tileSize / 2 - 1, 2, -10.5f * tileSize), Quaternion.Euler(0, 0, 0));
@@ -127,8 +128,10 @@ public class LevelGenerator : MonoBehaviour
 
         GenerateSlice(trackWidth, tileSize, 0, 0, startFinishTilePrefab, wallPrefab, gameObject);
 
-        GameObject[] straights = new GameObject[10];
-        for (int s = 0; s < 10; s++) {
+        int numberOfChunks = 20;
+        GameObject[] straights = new GameObject[numberOfChunks];
+        float[] lastChunkHeights = new float[numberOfChunks];
+        for (int s = 0; s < numberOfChunks; s++) {
             straights[s] = new GameObject();
 
             int MIN_TREND_LENGTH = 10;
@@ -230,6 +233,7 @@ public class LevelGenerator : MonoBehaviour
                 }
 
                 GenerateSlice(trackWidth, tileSize, height, i * tileSize, tilePrefab, wallPrefab, straights[s]);
+                lastChunkHeights[s] = height;
             }
         }
         
@@ -241,11 +245,16 @@ public class LevelGenerator : MonoBehaviour
         float nextRotationY = 0;
         float nextTurnX = 0;
         float nextTurnZ = length;
+
+        int straightCounter = 0;
+
         foreach (GameObject straight in straights) {
             straight.transform.position = new Vector3(nextChunkX, 0, nextChunkZ);
+            Debug.Log("straight positon: " + straight.transform.position);
             straight.transform.rotation = Quaternion.Euler(0, nextRotationY, 0);
 
-            Transform turn = GenerateTurn(new Vector3(nextTurnX, 0, nextTurnZ));
+            //  Debug.Log("before x = " + nextTurnX + " y = " + 0 + " z = " + nextTurnZ);
+
 
             Direction oppositeDirection = GetOppositeDirection(direction);
             isPossibleDirection = false;
@@ -254,40 +263,38 @@ public class LevelGenerator : MonoBehaviour
                 direction = (Direction)Random.Range(0, 3);
                 if (direction != oppositeDirection) {
                     isPossibleDirection = true;
-                    Debug.Log("direction: " + direction);
                     DirectionTrend directionTrend = GetDirectionTrend(previousDirection, direction);
-                    Debug.Log("directionTrend: " + directionTrend);
                     switch (directionTrend) {
                         case DirectionTrend.STRAIGHT:
                             nextRotationY = nextRotationY;
                             switch (direction) {
                                 case Direction.NORTH:
+                                    nextTurnX = nextChunkX;
+                                    nextTurnZ = nextChunkZ + length;
+
                                     nextChunkX = nextChunkX;
                                     nextChunkZ = nextChunkZ + length + trackWidth;
-
-                                    nextTurnX = nextTurnX;
-                                    nextTurnZ = nextTurnZ + length;
                                     break;
                                 case Direction.SOUTH:
+                                    nextTurnX = nextChunkX - trackWidth;
+                                    nextTurnZ = nextChunkZ - length - trackWidth;
+
                                     nextChunkX = nextChunkX;
                                     nextChunkZ = nextChunkZ - length - trackWidth;
-
-                                    nextTurnX = nextTurnX;
-                                    nextTurnZ = nextTurnZ - length;
                                     break;
                                 case Direction.WEST:
+                                    nextTurnX = nextChunkX - length - trackWidth;
+                                    nextTurnZ = nextChunkZ;
+
                                     nextChunkX = nextChunkX - length - trackWidth;
                                     nextChunkZ = nextChunkZ;
-
-                                    nextTurnX = nextTurnX + length;
-                                    nextTurnZ = nextTurnZ;
                                     break;
                                 case Direction.EAST:
+                                    nextTurnX = nextChunkX + length;
+                                    nextTurnZ = nextChunkZ;
+
                                     nextChunkX = nextChunkX + length + trackWidth;
                                     nextChunkZ = nextChunkZ;
-
-                                    nextTurnX = nextTurnX - length;
-                                    nextTurnZ = nextTurnZ;
                                     break;
                             }
                             break;
@@ -295,32 +302,32 @@ public class LevelGenerator : MonoBehaviour
                             nextRotationY += 90.0f;
                             switch (direction) {
                                 case Direction.NORTH:
+                                    nextTurnX = nextChunkX - length - trackWidth;
+                                    nextTurnZ = nextChunkZ;
+
                                     nextChunkX = nextChunkX - trackWidth - length;
                                     nextChunkZ = nextChunkZ + trackWidth;
-
-                                    nextTurnX = nextTurnX + trackWidth;
-                                    nextTurnZ = nextTurnZ + length;
                                     break;
                                 case Direction.SOUTH:
+                                    nextTurnX = nextChunkX;
+                                    nextTurnZ = nextChunkZ - length - trackWidth;
+
                                     nextChunkX = nextChunkX + trackWidth + length;
                                     nextChunkZ = nextChunkZ - trackWidth;
-
-                                    nextTurnX = nextTurnX;
-                                    nextTurnZ = nextTurnZ - length;
                                     break;
                                 case Direction.WEST:
+                                    nextTurnX = nextChunkX - trackWidth;
+                                    nextTurnZ = nextChunkZ - length - trackWidth;
+
                                     nextChunkX = nextChunkX - trackWidth;
                                     nextChunkZ = nextChunkZ - trackWidth - length;
-
-                                    nextTurnX = nextTurnX - length - trackWidth;
-                                    nextTurnZ = nextTurnZ;
                                     break;
                                 case Direction.EAST:
+                                    nextTurnX = nextChunkX + length;
+                                    nextTurnZ = nextChunkZ;
+
                                     nextChunkX = nextChunkX + trackWidth;
                                     nextChunkZ = nextChunkZ + trackWidth + length;
-
-                                    nextTurnX = nextTurnX + length;
-                                    nextTurnZ = nextTurnZ;
                                     break;
                             }
                             break;
@@ -328,37 +335,45 @@ public class LevelGenerator : MonoBehaviour
                             nextRotationY += -90.0f;
                             switch (direction) {
                                 case Direction.NORTH:
+                                    nextTurnX = nextChunkX;
+                                    nextTurnZ = nextChunkZ + length;
+
                                     nextChunkX = nextChunkX + length;
                                     nextChunkZ = nextChunkZ;
-
-                                    nextTurnX = nextTurnX;
-                                    nextTurnZ = nextTurnZ + length;
                                     break;
                                 case Direction.SOUTH:
+                                    nextTurnX = nextChunkX - length - trackWidth;
+                                    nextTurnZ = nextChunkZ;
+
                                     nextChunkX = nextChunkX - length;
                                     nextChunkZ = nextChunkZ;
-
-                                    nextTurnX = nextTurnX;
-                                    nextTurnZ = nextTurnZ - length;
                                     break;
                                 case Direction.WEST:
+                                    nextTurnX = nextChunkX;
+                                    nextTurnZ = nextChunkZ + length;
+
                                     nextChunkX = nextChunkX;
                                     nextChunkZ = nextChunkZ + length;
-
-                                    nextTurnX = nextTurnX - length;
-                                    nextTurnZ = nextTurnZ;
                                     break;
                                 case Direction.EAST:
+                                    nextTurnX = nextChunkX;
+                                    nextTurnZ = nextChunkZ - length;
+
                                     nextChunkX = nextChunkX;
                                     nextChunkZ = nextChunkZ - length;
-
-                                    nextTurnX = nextTurnX + length;
-                                    nextTurnZ = nextTurnZ;
                                     break;
                             }
                             break;
                     }
                 }
+            }
+            
+            // Debug.Log("after x = " + nextTurnX + " y = " + 0 + " z = " + nextTurnZ);
+            // Transform turn = GenerateTurn(new Vector3(nextTurnX, 0, nextTurnZ));
+            if (straightCounter < (numberOfChunks - 1)) {
+                Debug.Log("straightCounter: " + straightCounter);
+                Transform turn = GenerateTurn(new Vector3(nextTurnX, lastChunkHeights[straightCounter], nextTurnZ));
+                straightCounter++;
             }
         }
 
