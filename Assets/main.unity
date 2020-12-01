@@ -443,7 +443,7 @@ MonoBehaviour:
   - {fileID: 537212631}
   - {fileID: 206651359}
   forwardAcceleration: 150000
-  reverseAcceleration: 10000
+  reverseAcceleration: 5000
   turnStrength: 10000
   dustTrails:
   - {fileID: 0}
@@ -2031,7 +2031,7 @@ MonoBehaviour:
   - {fileID: 699592220}
   - {fileID: 429308074}
   forwardAcceleration: 150000
-  reverseAcceleration: 10000
+  reverseAcceleration: 5000
   turnStrength: 10000
   dustTrails:
   - {fileID: 0}

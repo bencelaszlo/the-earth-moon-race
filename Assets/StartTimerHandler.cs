@@ -13,7 +13,7 @@ public class StartTimerHandler : MonoBehaviour
     public void Start()
     {
         gameObject.GetComponent<TestController>().forwardAcceleration = 0;
-        gameObject.GetComponent<TestController>().reverseAcceleration = 10000;
+        gameObject.GetComponent<TestController>().reverseAcceleration = 0;
         startText.GetComponent<Text>().text = "Ready";
     }
     void FixedUpdate()
@@ -25,7 +25,7 @@ public class StartTimerHandler : MonoBehaviour
         else if (timeRemaining > 0)
         {
             gameObject.GetComponent<TestController>().forwardAcceleration = 150000;
-            gameObject.GetComponent<TestController>().reverseAcceleration = 1000010000;
+            gameObject.GetComponent<TestController>().reverseAcceleration = 5000;
             startText.GetComponent<Text>().text = "GO!";
             timeRemaining -= Time.deltaTime;
         } else {

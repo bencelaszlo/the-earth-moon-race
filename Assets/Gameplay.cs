@@ -16,7 +16,7 @@ public class Gameplay : MonoBehaviour
 
     [SerializeField]
     GameObject winnerText;
-
+    
     [SerializeField]
     GameObject inGameMenu;
 
@@ -79,7 +79,7 @@ public class Gameplay : MonoBehaviour
                     winnerText.GetComponent<Text>().text = playerName + " " + "Wins!";
                     positionText.GetComponent<Text>().text = "";
                     inGameMenu.SetActive(true);
-                    
+
                 }
             }
         } else {
