@@ -171,8 +171,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   acceleration: 1000
-  rotationRate: 40
-  turnRotationAngle: 25
+  rotationRate: 250
+  turnRotationAngle: 30
   turnRotationSeekSpeed: 0.25
   verticalAxis: PlayerTwoVerticalKey
   horizontalAxis: PlayerTwoHorizontalKey
@@ -1202,8 +1202,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   acceleration: 1000
-  rotationRate: 40
-  turnRotationAngle: 25
+  rotationRate: 250
+  turnRotationAngle: 30
   turnRotationSeekSpeed: 0.25
   verticalAxis: PlayerOneVerticalKey
   horizontalAxis: PlayerOneHorizontalKey
@@ -1750,8 +1750,8 @@ MonoBehaviour:
     type: 3}
   wallPrefab: {fileID: 2499647243506213042, guid: acd110702a2045cafac2087f54204eb5,
     type: 3}
-  length: 2000
-  trackWidth: 19
+  length: 200
+  trackWidth: 50
   tileSize: 1
   maxHeight: 10
   minHeight: 0
