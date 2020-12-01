@@ -17,6 +17,10 @@ public class Gameplay : MonoBehaviour
     [SerializeField]
     GameObject winnerText;
 
+    [SerializeField]
+    GameObject inGameMenu;
+
+
     private int position;
     private bool isWinner;
     public bool isLoser;
@@ -74,6 +78,8 @@ public class Gameplay : MonoBehaviour
                     winnerText.SetActive(true);
                     winnerText.GetComponent<Text>().text = playerName + " " + "Wins!";
                     positionText.GetComponent<Text>().text = "";
+                    inGameMenu.SetActive(true);
+                    
                 }
             }
         } else {

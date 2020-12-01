@@ -8,8 +8,6 @@ public class EscBtnPressedListening : MonoBehaviour
 
     public GameObject inGameMenu;
     public bool isPanelShown = false;
-
-    // Update is called once per frame
     
     void Start()
     {
@@ -17,11 +15,11 @@ public class EscBtnPressedListening : MonoBehaviour
     }
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) & !isPanelShown)
+        if (Input.GetKeyDown(KeyCode.Escape) && !isPanelShown)
         {
             ShowInGameMenu();
         }
-        else if(Input.GetKeyDown(KeyCode.Escape) & isPanelShown)
+        else if(Input.GetKeyDown(KeyCode.Escape) && isPanelShown)
         {
             HideInGameMenu();
         }
