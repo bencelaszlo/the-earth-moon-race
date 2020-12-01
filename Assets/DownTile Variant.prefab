@@ -12,6 +12,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: DownTile Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 1530133249922813766, guid: c0247678d7867fd48a5bfcc4c67ca579,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 401ad4983cc206c4f923a26dd2542db1, type: 2}
     - target: {fileID: 1530133249922813816, guid: c0247678d7867fd48a5bfcc4c67ca579,
         type: 3}
       propertyPath: m_LocalPosition.x

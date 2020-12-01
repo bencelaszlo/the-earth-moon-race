@@ -12,6 +12,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: StraightTile Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 6432193907568079135, guid: e44b6a11c0e455f6b818e0d19916078a,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 401ad4983cc206c4f923a26dd2542db1, type: 2}
     - target: {fileID: 6432193907568079137, guid: e44b6a11c0e455f6b818e0d19916078a,
         type: 3}
       propertyPath: m_LocalPosition.x
