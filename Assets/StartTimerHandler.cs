@@ -5,15 +5,15 @@ using UnityEngine.UI;
 
 public class StartTimerHandler : MonoBehaviour
 {
-    public float timeRemaining = 10;
+    public float timeRemaining = 3;
 
     [SerializeField]
     GameObject startText;
 
     public void Start()
     {
-        gameObject.GetComponent<CarController>().acceleration = 0;
-        gameObject.GetComponent<CarController>().turnRotationAngle = 0;
+        gameObject.GetComponent<TestController>().forwardAcceleration = 0;
+        gameObject.GetComponent<TestController>().reverseAcceleration = 10000;
         startText.GetComponent<Text>().text = "Ready";
     }
     void FixedUpdate()
@@ -24,8 +24,8 @@ public class StartTimerHandler : MonoBehaviour
         }
         else if (timeRemaining > 0)
         {
-            gameObject.GetComponent<CarController>().acceleration = 2500;
-            gameObject.GetComponent<CarController>().turnRotationAngle = 30;
+            gameObject.GetComponent<TestController>().forwardAcceleration = 150000;
+            gameObject.GetComponent<TestController>().reverseAcceleration = 1000010000;
             startText.GetComponent<Text>().text = "GO!";
             timeRemaining -= Time.deltaTime;
         } else {

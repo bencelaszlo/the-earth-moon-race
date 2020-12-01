@@ -41,14 +41,33 @@ public class Gameplay : MonoBehaviour
 
     void Update()
     {
+
         if (!isStarted) {
             positionText.SetActive(true);
             isStarted = true;
         }
 
-        if (transform.position.z > opponent.position.z) {
+        Vector3 closestFinishPoint;
+        float closetstFinishDistance = float.MaxValue;
+        Vector3 opponentClosestFinishPoint;
+        float opponentClosestDistance = float.MaxValue;
+
+        for (int i = 0; i < levelGenerator.finishLine.Length; i++) {
+            if (Vector3.Distance(levelGenerator.finishLine[i], transform.position) < closetstFinishDistance) {
+                closestFinishPoint = levelGenerator.finishLine[i];
+                closetstFinishDistance = Vector3.Distance(levelGenerator.finishLine[i], transform.position);
+                Debug.Log("closetstFinishDistance: " + closetstFinishDistance);
+            }
+
+            if (Vector3.Distance(levelGenerator.finishLine[i], opponent.position) < opponentClosestDistance) {
+                opponentClosestFinishPoint = levelGenerator.finishLine[i];
+                opponentClosestDistance = Vector3.Distance(levelGenerator.finishLine[i], opponent.position);
+            }
+        }
+
+        if (closetstFinishDistance < opponentClosestDistance) {
             position = 1;
-            if (transform.position.z > levelGenerator.length) {
+            if (closetstFinishDistance < 5.0f) {
                 opponent.GetComponent<Gameplay>().isLoser = true;
                 if (!isLoser) {
                     isWinner = true;
@@ -60,6 +79,7 @@ public class Gameplay : MonoBehaviour
         } else {
             position = 2;
         }
+
         positionText.GetComponent<Text>().text = position == 1 ? "First" : "Second";
     }
 }

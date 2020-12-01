@@ -108,11 +108,9 @@ public class TestController : MonoBehaviour
       		}
     	}
 			
-		var emissionRate = 0;
 		if(grounded)
 		{
 			body.drag = groundedDrag;
-			emissionRate = 10;
 		}
 		else
 		{

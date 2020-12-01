@@ -32,6 +32,11 @@ public class LevelGenerator : MonoBehaviour
     int maxHeight;
     [SerializeField]
     int minHeight;
+    [SerializeField]
+    int numberOfChunks = 5;
+
+    public Vector3[] finishLine;
+
     enum HeightTrend {
             STEADY,
             FRESH_STEADY, // STEADY LESSER THAN 3 TILES AGO
@@ -101,9 +106,6 @@ public class LevelGenerator : MonoBehaviour
     {
         float size = trackWidth * tileSize;
         position += new Vector3(size / 2, 0, size / 2);
-        // Debug.Log("before x = " + nextTurnX + " y = " + 0 + " z = " + nextTurnZ);
-        // Debug.Log("before x = " + nextTurnX + " y = " + 0 + " z = " + nextTurnZ);
-        Debug.Log("Positon: " + position);
         Transform tile = Instantiate(tilePrefab, position, Quaternion.identity);
         tile.transform.localScale = new Vector3(size, 0.1f, size);
         return tile;
@@ -128,7 +130,6 @@ public class LevelGenerator : MonoBehaviour
 
         GenerateSlice(trackWidth, tileSize, 0, 0, startFinishTilePrefab, wallPrefab, gameObject);
 
-        int numberOfChunks = 20;
         GameObject[] straights = new GameObject[numberOfChunks];
         float[] lastChunkHeights = new float[numberOfChunks];
         for (int s = 0; s < numberOfChunks; s++) {
@@ -232,7 +233,11 @@ public class LevelGenerator : MonoBehaviour
                     }
                 }
 
-                GenerateSlice(trackWidth, tileSize, height, i * tileSize, tilePrefab, wallPrefab, straights[s]);
+                if (s == lastChunkHeights.Length - 1) {
+                    GenerateSlice(trackWidth, tileSize, height, i * tileSize, startFinishTilePrefab, wallPrefab, straights[s]);
+                } else {
+                    GenerateSlice(trackWidth, tileSize, height, i * tileSize, tilePrefab, wallPrefab, straights[s]);
+                }
                 lastChunkHeights[s] = height;
             }
         }
@@ -248,13 +253,14 @@ public class LevelGenerator : MonoBehaviour
 
         int straightCounter = 0;
 
+        Direction lastDirection = Direction.NORTH;
+
+        Vector3 finishPoint = new Vector3(0, 0, 0);
+
         foreach (GameObject straight in straights) {
             straight.transform.position = new Vector3(nextChunkX, 0, nextChunkZ);
-            Debug.Log("straight positon: " + straight.transform.position);
+            finishPoint = straight.transform.position;
             straight.transform.rotation = Quaternion.Euler(0, nextRotationY, 0);
-
-            //  Debug.Log("before x = " + nextTurnX + " y = " + 0 + " z = " + nextTurnZ);
-
 
             Direction oppositeDirection = GetOppositeDirection(direction);
             isPossibleDirection = false;
@@ -368,18 +374,37 @@ public class LevelGenerator : MonoBehaviour
                 }
             }
             
-            // Debug.Log("after x = " + nextTurnX + " y = " + 0 + " z = " + nextTurnZ);
-            // Transform turn = GenerateTurn(new Vector3(nextTurnX, 0, nextTurnZ));
             if (straightCounter < (numberOfChunks - 1)) {
-                Debug.Log("straightCounter: " + straightCounter);
                 Transform turn = GenerateTurn(new Vector3(nextTurnX, lastChunkHeights[straightCounter], nextTurnZ));
                 straightCounter++;
+                lastDirection = direction;
             }
         }
+        
+        finishLine = new Vector3[(int)trackWidth];
 
-        // GenerateSlice(trackWidth, tileSize, height, (length - 1), startFinishTilePrefab, wallPrefab, straights[s]);
-
-
+        switch (lastDirection) {
+            case Direction.NORTH:
+                for (int f = 0; f < trackWidth; f++) {
+                    finishLine[f] = finishPoint + new Vector3(f * tileSize, 0, length);
+                }
+                break;
+            case Direction.SOUTH:
+                for (int f = 0; f < trackWidth; f++) {
+                    finishLine[f] = finishPoint + new Vector3(-f * tileSize, 0, -length);
+                }
+                break;
+            case Direction.WEST:
+                for (int f = 0; f < trackWidth; f++) {
+                    finishLine[f] = finishPoint + new Vector3(-length, 0, f * tileSize);
+                }
+                break;
+            case Direction.EAST:
+                for (int f = 0; f < trackWidth; f++) {
+                    finishLine[f] = finishPoint + new Vector3(length, 0, -f * tileSize);
+                }
+                break;
+        }
     }
 
     private void GenerateSlice(float trackWidth, float tileSize, float y, float x, Transform tilePrefab, Transform wallPrefab, GameObject straight) 

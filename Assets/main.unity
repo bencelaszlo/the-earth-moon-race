@@ -2353,11 +2353,13 @@ MonoBehaviour:
     type: 3}
   wallPrefab: {fileID: 2499647243506213042, guid: acd110702a2045cafac2087f54204eb5,
     type: 3}
-  length: 200
+  length: 100
   trackWidth: 50
   tileSize: 1
   maxHeight: 0
   minHeight: 0
+  numberOfChunks: 3
+  finishLine: {x: 0, y: 0, z: 0}
   heightmap: []
 --- !u!1 &1741862945
 GameObject:
