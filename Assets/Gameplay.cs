@@ -46,8 +46,6 @@ public class Gameplay : MonoBehaviour
             isStarted = true;
         }
 
-        Debug.Log("isWinner: " + isWinner);
-        Debug.Log("Position: " + position);
         if (transform.position.z > opponent.position.z) {
             position = 1;
             if (transform.position.z > levelGenerator.length) {

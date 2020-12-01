@@ -15,10 +15,8 @@ public class SmartHeightController : MonoBehaviour
     {
         timeCounter += Time.deltaTime;
         if (timeCounter > timeLimit) {
-            Debug.Log("adjuster is active");
             Transform transform = gameObject.GetComponent<Transform>();
             float carY = transform.position.x;
-            Debug.Log("current pos: " + carY);
             float carX = transform.position.y;
             float[] nextTilesHeight = new float[3];
             int nextTilesStartIndex = Mathf.CeilToInt(carX);
